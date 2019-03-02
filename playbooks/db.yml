@@ -1,0 +1,20 @@
+--- 
+  - name: Install missing packages
+    hosts: db
+    become: true
+    tasks:
+      - name: Install Python Packages
+        package:
+          name: "{{ item }}"
+          state: present
+        with_items:
+          - python3
+          - python3-pymysql
+        when: ansible_os_family == 'Debian'
+
+  - name: playbook to configure db servers 
+    hosts: db
+    become: yes
+    roles:
+      - { role: geerlingguy.mysql }
+
